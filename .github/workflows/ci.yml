@@ -1,0 +1,19 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t hello-devops .
+
+      - name: Test the app
+        run: |
+          docker run -d -p 8080:8080 hello-devops
+          sleep 5
+          curl --fail http://localhost:8080
